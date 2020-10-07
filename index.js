@@ -49,11 +49,31 @@ app.delete('/api/persons/:id', (request, response) => {
   response.status(204).end()
 })
 
-app.post('/api/persons', (request, response) => {
+const makeID = () => {
   const randomID = Math.floor(Math.random() * 999)
+  return randomID
+}
 
-  const person = request.body
-  person.id = randomID
+app.post('/api/persons', (request, response) => {
+  const body = request.body
+
+  const person = {
+    name: body.name,
+    number: body.number,
+    id: makeID(),  
+  }
+  
+  if (!body.name || !body.number) {
+    return response.status(400).json({ 
+      error: 'Name or number is missing' 
+    })
+  }
+
+  if (persons.some(person => person.name === body.name)) {
+    return response.status(400).json({ 
+      error: 'Name already exists in phonebook' 
+    })
+  }
 
   persons = persons.concat(person)
 
