@@ -2,8 +2,6 @@
 
 ## Part 3
 
-Whole part 3 will be done in this separate repo. 
+My part 3 *(Programming a server with NodeJS and Express)* in Full stack open 2020 will be done in this separate repo.
 
 Rest of the parts can be found here: https://github.com/markusbjorklund/fullstack 
-
-
