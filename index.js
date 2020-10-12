@@ -6,7 +6,9 @@ const app = express()
 
 app.use(express.json())
 
-app.use(morgan('tiny'))
+morgan.token('body', (req, res) => JSON.stringify(req.body));
+
+app.use(morgan(':method :url :status :res[content-length] :response-time ms :body'));
 
 let persons = [
   {
@@ -64,18 +66,18 @@ app.post('/api/persons', (request, response) => {
   const person = {
     name: body.name,
     number: body.number,
-    id: makeID(),  
+    id: makeID(),
   }
-  
+
   if (!body.name || !body.number) {
-    return response.status(400).json({ 
-      error: 'Name or number is missing' 
+    return response.status(400).json({
+      error: 'Name or number is missing'
     })
   }
 
   if (persons.some(person => person.name === body.name)) {
-    return response.status(400).json({ 
-      error: 'Name already exists in phonebook' 
+    return response.status(400).json({
+      error: 'Name already exists in phonebook'
     })
   }
 
