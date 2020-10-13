@@ -9,3 +9,7 @@ Content-Type: application/json
   "name": "macken",
   "number": "555-EAT ME"
 }
+
+### 
+
+GET http://localhost:3001/api/persons/5

@@ -1,9 +1,10 @@
+require('dotenv').config()
 const http = require('http')
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
-
 const app = express()
+const Person = require('./models/persons')
 
 app.use(express.json())
 app.use(cors())
@@ -36,10 +37,6 @@ let persons = [
   }
 ]
 
-app.get('/api/persons', (req, res) => {
-  res.json(persons)
-})
-
 app.get('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   const person = persons.find(person => person.id === id)
@@ -54,7 +51,6 @@ app.get('/api/persons/:id', (request, response) => {
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   persons = persons.filter(person => person.id !== id)
-
   response.status(204).end()
 })
 
@@ -83,17 +79,21 @@ app.post('/api/persons', (request, response) => {
       error: 'Name already exists in phonebook'
     })
   }
-
   persons = persons.concat(person)
-
   response.json(person)
 })
 
-app.get('/info', (req, res) => {
-  res.send('<p>Phonebook has info for ' + persons.length + ' people</p> <p>' + Date() + '</p>')
+// app.get('/api/persons', (request, ressponse) => {
+//   response.json(persons)
+// })
+
+app.get('/api/persons', (request, response) => {
+  Person.find({}).then(phonebook  => {
+    response.json(phonebook)
+  })
 })
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
