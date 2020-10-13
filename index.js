@@ -26,9 +26,9 @@ app.post('/api/persons', (request, response, next) => {
     return response.status(400).json({ error: 'Insert a name' })
   }
 
-  if (body.number === undefined) {
-    return response.status(400).json({ error: 'Insert a number' })
-  }
+  // if (body.number === undefined) {
+  //   return response.status(400).json({ error: 'Insert a number' })
+  // }
 
   const person = new Person({
     name: body.name,
@@ -43,14 +43,17 @@ app.post('/api/persons', (request, response, next) => {
 })
 
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
+  response.status(404).send({ error: 'Unknown endpoint' })
 }
 
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
 
   if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id' })
+    return response.status(400).send({ error: 'Malformatted id' })
+  }
+  else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: 'Name has to be unique' })
   }
   next(error)
 }
