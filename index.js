@@ -75,8 +75,8 @@ app.put('/api/persons/:id', (request, response, next) => {
 
   Person.findByIdAndUpdate(request.params.id, person, { new: true })
     .then(updatedPerson => {
-        response.json(updatedPerson)
-      })
+      response.json(updatedPerson)
+    })
     .catch(error => next(error))
 })
 
@@ -89,6 +89,12 @@ app.get('/api/persons/:id', (request, response, next) => {
       else { response.status(404).end() }
     })
     .catch(error => next(error))
+})
+
+app.get('/info', (request, response) => {
+  Person.count({}).then(countedPersons => {
+    response.send(`<p>Phonebook has info for ${countedPersons} people</p> <p>${new Date()}</p>`)
+  })
 })
 
 app.use(unknownEndpoint)
