@@ -37,22 +37,13 @@ let persons = [
   }
 ]
 
-app.get('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const person = persons.find(person => person.id === id)
-
-  if (person) {
-    response.json(person)
-  } else {
-    response.status(404).end()
-  }
-})
-
 app.delete('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  persons = persons.filter(person => person.id !== id)
-  response.status(204).end()
+  Person.findByIdAndRemove(request.params.id)
+    .then(phonebook => {
+      response.status(204).end()
+    })
 })
+
 
 const makeID = () => {
   const randomID = Math.floor(Math.random() * 999)
@@ -77,6 +68,20 @@ app.get('/api/persons', (request, response) => {
   Person.find({}).then(phonebook => {
     response.json(phonebook)
   })
+})
+
+app.get('/api/persons/:id', (request, response) => {
+  Person.findById(request.params.id)
+    .then(phonebook => {
+      if (phonebook) {
+        response.json(phonebook)
+      }
+      else { response.status(404).end() }
+    })
+    .catch(error => {
+      console.log(error)
+      response.status(400).send({ error: 'malformatted id' })
+    })
 })
 
 const PORT = process.env.PORT

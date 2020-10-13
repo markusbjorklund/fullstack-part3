@@ -1,4 +1,5 @@
 DELETE http://localhost:3001/api/persons/4
+Content-Type: application/json
 
 ###
 
@@ -6,10 +7,11 @@ POST http://localhost:3001/api/persons/
 Content-Type: application/json
 
 {
-  "name": "macken",
-  "number": "555-EAT ME"
+  "name": "Arthur Shelby",
+  "number": "040-99887766"
 }
 
 ### 
 
-GET http://localhost:3001/api/persons/5
+GET http://localhost:3001/api/persons/100
+Content-Type: application/json
