@@ -6,6 +6,7 @@ const cors = require('cors')
 const app = express()
 const Person = require('./models/persons')
 const { nextTick } = require('process')
+const { response } = require('express')
 
 app.use(express.json())
 app.use(cors())
@@ -51,18 +52,6 @@ app.post('/api/persons', (request, response, next) => {
     number: body.number,
     id: makeID(),
   })
-
-  if (!body.name || !body.number) {
-    return response.status(400).json({
-      error: 'Name or number is missing'
-    })
-  }
-
-  if (persons.some(person => person.name === body.name)) {
-    return response.status(400).json({
-      error: 'Name already exists in phonebook'
-    })
-  }
 
   person.save().then(savedPerson => {
     response.json(savedPerson)
