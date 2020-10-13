@@ -6,7 +6,7 @@ const cors = require('cors')
 const app = express()
 const Person = require('./models/persons')
 const { nextTick } = require('process')
-const { response } = require('express')
+const { response, request } = require('express')
 
 app.use(express.json())
 app.use(cors())
@@ -47,6 +47,14 @@ const makeID = () => {
 app.post('/api/persons', (request, response, next) => {
   const body = request.body
 
+  if (body.name === undefined) {
+    return response.status(400).json({ error: 'Insert a name' })
+  }
+
+  if (body.number === undefined) {
+    return response.status(400).json({ error: 'Insert a number' })
+  }
+
   const person = new Person({
     name: body.name,
     number: body.number,
@@ -83,10 +91,7 @@ app.put('/api/persons/:id', (request, response, next) => {
 app.get('/api/persons/:id', (request, response, next) => {
   Person.findById(request.params.id)
     .then(phonebook => {
-      if (phonebook) {
-        response.json(phonebook)
-      }
-      else { response.status(404).end() }
+      response.status(204).end()
     })
     .catch(error => next(error))
 })

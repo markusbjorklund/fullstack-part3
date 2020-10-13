@@ -7,13 +7,12 @@ POST http://localhost:3001/api/persons/
 Content-Type: application/json
 
 {
-  "name": "New Arthur Shelby",
-  "number": "040-99887766"
+  "name": "040-99887766"
 }
 
 ### 
 
-GET http://localhost:3001/api/persons/100
+GET http://localhost:3001/api/persons/2
 Content-Type: application/json
 
 ###
