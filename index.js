@@ -62,33 +62,19 @@ const makeID = () => {
 app.post('/api/persons', (request, response) => {
   const body = request.body
 
-  const person = {
+  const person = new Person({
     name: body.name,
     number: body.number,
     id: makeID(),
-  }
+  })
 
-  if (!body.name || !body.number) {
-    return response.status(400).json({
-      error: 'Name or number is missing'
-    })
-  }
-
-  if (persons.some(person => person.name === body.name)) {
-    return response.status(400).json({
-      error: 'Name already exists in phonebook'
-    })
-  }
-  persons = persons.concat(person)
-  response.json(person)
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
 })
 
-// app.get('/api/persons', (request, ressponse) => {
-//   response.json(persons)
-// })
-
 app.get('/api/persons', (request, response) => {
-  Person.find({}).then(phonebook  => {
+  Person.find({}).then(phonebook => {
     response.json(phonebook)
   })
 })
