@@ -94,7 +94,10 @@ app.put('/api/persons/:id', (request, response, next) => {
 
   Person.findByIdAndUpdate(request.params.id, person, { new: true })
     .then(updatedPerson => {
-      response.json(updatedPerson)
+      if (phonebook) {
+        response.json(updatedPerson)
+      }
+      else { response.status(204).end() }
     })
     .catch(error => next(error))
 })
