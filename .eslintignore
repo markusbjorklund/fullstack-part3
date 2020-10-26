@@ -1,5 +1,4 @@
 build
 static
-build_old
 mongo.js
 .eslintrc.js
